@@ -245,7 +245,7 @@ def _traverse_runnable(
 
         if lc_model.func is not None:
             for node in inspect.getclosurevars(lc_model.func).globals.values():
-                yield from _traverse_runnable(node.data, visited)
+                yield from _traverse_runnable(node, visited)
     else:
         # No-op for non-runnable, if any
         pass
