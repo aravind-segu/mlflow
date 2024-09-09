@@ -359,8 +359,11 @@ def save_model(
     )
 
     if Version(langchain.__version__) >= Version("0.0.311"):
+        print("Getting resources")
         if databricks_resources := _detect_databricks_dependencies(lc_model):
             serialized_databricks_resources = _ResourceBuilder.from_resources(databricks_resources)
+            print("RESOURCES OUTPUTTED")
+            print(serialized_databricks_resources)
             mlflow_model.resources = serialized_databricks_resources
 
     mlflow_model.add_flavor(
@@ -370,6 +373,7 @@ def save_model(
         streamable=streamable,
         **flavor_conf,
     )
+    print(mlflow_model)
     if size := get_total_file_size(path):
         mlflow_model.model_size_bytes = size
     mlflow_model.save(os.path.join(path, MLMODEL_FILE_NAME))
