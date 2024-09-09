@@ -242,6 +242,9 @@ def _traverse_runnable(
         # Visit the returned graph
         for node in lc_model.get_graph().nodes.values():
             yield from _traverse_runnable(node.data, visited)
+        
+        for node in inspect.getclosurevars(lc_model.func).globals.values():
+            yield from _traverse_runnable(node.data, visited)
     else:
         # No-op for non-runnable, if any
         pass
@@ -268,6 +271,7 @@ def _detect_databricks_dependencies(lc_model, log_errors_as_warnings=True) -> Li
     If an llm is found, it will be used to extract the databricks llm dependencies.
     If a chat_model is found, it will be used to extract the databricks chat dependencies.
     """
+    print("Getting databricks Dependencies")
     try:
         dependency_list = list(_traverse_runnable(lc_model))
         # Filter out duplicate dependencies so same dependencies are not added multiple times
