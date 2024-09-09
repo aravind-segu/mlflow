@@ -254,6 +254,10 @@ def _traverse_runnable(
         print(dir(lc_model))
         print(inspect.getclosurevars(lc_model.func))
         print("*************************************")
+        for node in inspect.getclosurevars(lc_model.func).globals.values():
+            print("new node")
+            print(node)
+            yield from _traverse_runnable(node, visited)
     else:
         # No-op for non-runnable, if any
         pass
