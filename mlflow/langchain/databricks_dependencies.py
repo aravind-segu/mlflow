@@ -167,6 +167,7 @@ def _extract_databricks_dependencies_from_chat_model(chat_model) -> Generator[Re
     from langchain_community.chat_models import ChatDatabricks
 
     if isinstance(chat_model, (LegacyChatDatabricks, ChatDatabricks)):
+        print("ITS CHAT DATABRICKS YAAAYYA")
         yield DatabricksServingEndpoint(endpoint_name=chat_model.endpoint)
 
 
@@ -255,12 +256,6 @@ def _traverse_runnable(
             print(type(node.data))
             print(id(node.data))
             yield from _traverse_runnable(node.data, visited)
-        print("traversing reunnables")
-        print(type(lc_model))
-        print(lc_model)
-        print(dir(lc_model))
-        print(inspect.getclosurevars(lc_model.func))
-        print("*************************************")
         # for node in inspect.getclosurevars(lc_model.func).globals.values():
         #     print("new node")
         #     print(node)
