@@ -251,6 +251,9 @@ def _traverse_runnable(
     if isinstance(lc_model, Runnable):
         # Visit the returned graph
         for node in lc_model.get_graph().nodes.values():
+            print('inside traverse')
+            print(type(node.data))
+            print(id(node.data))
             yield from _traverse_runnable(node.data, visited)
         print("traversing reunnables")
         print(type(lc_model))
