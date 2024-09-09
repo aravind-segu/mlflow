@@ -248,6 +248,12 @@ def _traverse_runnable(
         # Visit the returned graph
         for node in lc_model.get_graph().nodes.values():
             yield from _traverse_runnable(node.data, visited)
+        print("traversing reunnables")
+        print(type(lc_model))
+        print(lc_model)
+        print(dir(lc_model))
+        print(inspect.getclosurevars(lc_model.func))
+        print("*************************************")
     else:
         # No-op for non-runnable, if any
         pass
