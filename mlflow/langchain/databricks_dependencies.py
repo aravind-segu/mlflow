@@ -238,6 +238,7 @@ def _traverse_runnable(
     from langchain_core.runnables import Runnable
     print("TYPE")
     print(type(lc_model))
+    print(id(lc_model))
     visited = visited or set()
     current_object_id = id(lc_model)
     if current_object_id in visited:
@@ -257,10 +258,10 @@ def _traverse_runnable(
         print(dir(lc_model))
         print(inspect.getclosurevars(lc_model.func))
         print("*************************************")
-        for node in inspect.getclosurevars(lc_model.func).globals.values():
-            print("new node")
-            print(node)
-            yield from _traverse_runnable(node, visited)
+        # for node in inspect.getclosurevars(lc_model.func).globals.values():
+        #     print("new node")
+        #     print(node)
+        #     yield from _traverse_runnable(node, visited)
     else:
         # No-op for non-runnable, if any
         pass
