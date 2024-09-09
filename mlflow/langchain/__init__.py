@@ -362,6 +362,7 @@ def save_model(
         print("GETTING DATABRICKS RESOURCES")
         if databricks_resources := _detect_databricks_dependencies(lc_model):
             serialized_databricks_resources = _ResourceBuilder.from_resources(databricks_resources)
+            print("RESOURCES")
             print(serialized_databricks_resources)
             mlflow_model.resources = serialized_databricks_resources
 

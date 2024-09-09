@@ -77,6 +77,7 @@ def _is_langchain_tools_supported() -> bool:
 
 def _extract_databricks_dependencies_from_tools(tools) -> Generator[Resource, None, None]:
     if isinstance(tools, list):
+        print("FOUND TOOLS")
         from langchain_community.tools import BaseTool
 
         warehouse_ids = set()
@@ -173,6 +174,7 @@ def _extract_databricks_dependencies_from_tool_nodes(tool_node) -> Generator[Res
     from langgraph.prebuilt.tool_node import ToolNode
 
     if isinstance(tool_node, ToolNode):
+        print("FOUND LANGGRAPH TOOLS")
         yield from _extract_databricks_dependencies_from_tools(
             list(tool_node.tools_by_name.values())
         )
