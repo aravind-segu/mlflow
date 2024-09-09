@@ -250,16 +250,16 @@ def _traverse_runnable(
     yield from _extract_dependency_list_from_lc_model(lc_model)
 
     if isinstance(lc_model, Runnable):
+        global_vars = inspect.getclosurevars(lc_model.func).globals
+        if "agent" in global_vars:
+           print("FOUND THE AGENT")
+           yield from _traverse_runnable(global_vars["agent"], visited)
         # Visit the returned graph
         for node in lc_model.get_graph().nodes.values():
             print('inside traverse')
             print(type(node.data))
             print(id(node.data))
             yield from _traverse_runnable(node.data, visited)
-        global_vars = inspect.getclosurevars(lc_model.func).globals
-        if "agent" in global_vars:
-           print("FOUND THE AGENT")
-           yield from _traverse_runnable(global_vars["agent"], visited)
     else:
         # No-op for non-runnable, if any
         pass
@@ -289,6 +289,8 @@ def _detect_databricks_dependencies(lc_model, log_errors_as_warnings=True) -> Li
     print("Getting databricks Dependencies")
     try:
         dependency_list = list(_traverse_runnable(lc_model))
+        print("FOUND ALL THESE DEPENDENCIES")
+        print(dependency_list)
         # Filter out duplicate dependencies so same dependencies are not added multiple times
         # We can't use set here as the object is not hashable so we need to filter it out manually.
         unique_dependencies = []
