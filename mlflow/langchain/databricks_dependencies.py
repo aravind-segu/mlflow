@@ -236,7 +236,8 @@ def _traverse_runnable(
     This function supports arbitrary LCEL chain.
     """
     from langchain_core.runnables import Runnable
-
+    print("TYPE")
+    print(type(lc_model))
     visited = visited or set()
     current_object_id = id(lc_model)
     if current_object_id in visited:
