@@ -250,10 +250,11 @@ def _traverse_runnable(
     yield from _extract_dependency_list_from_lc_model(lc_model)
 
     if isinstance(lc_model, Runnable):
-        global_vars = inspect.getclosurevars(lc_model.func).globals
-        if "agent" in global_vars:
-           print("FOUND THE AGENT")
-           yield from _traverse_runnable(global_vars["agent"], visited)
+        if "func" in lc_model:
+            global_vars = inspect.getclosurevars(lc_model.func).globals
+            if "agent" in global_vars:
+                print("FOUND THE AGENT")
+                yield from _traverse_runnable(global_vars["agent"], visited)
         # Visit the returned graph
         for node in lc_model.get_graph().nodes.values():
             print('inside traverse')
