@@ -359,8 +359,10 @@ def save_model(
     )
 
     if Version(langchain.__version__) >= Version("0.0.311"):
+        print("GETTING DATABRICKS RESOURCES")
         if databricks_resources := _detect_databricks_dependencies(lc_model):
             serialized_databricks_resources = _ResourceBuilder.from_resources(databricks_resources)
+            print(serialized_databricks_resources)
             mlflow_model.resources = serialized_databricks_resources
 
     mlflow_model.add_flavor(
@@ -372,6 +374,7 @@ def save_model(
     )
     if size := get_total_file_size(path):
         mlflow_model.model_size_bytes = size
+    print(mlflow_model)
     mlflow_model.save(os.path.join(path, MLMODEL_FILE_NAME))
 
     if conda_env is None:
