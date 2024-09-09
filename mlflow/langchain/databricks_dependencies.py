@@ -256,10 +256,10 @@ def _traverse_runnable(
             print(type(node.data))
             print(id(node.data))
             yield from _traverse_runnable(node.data, visited)
-        # for node in inspect.getclosurevars(lc_model.func).globals.values():
-        #     print("new node")
-        #     print(node)
-        #     yield from _traverse_runnable(node, visited)
+        global_vars = inspect.getclosurevars(lc_model.func).globals
+        if "agent" in global_vars:
+           print("FOUND THE AGENT")
+           yield from _traverse_runnable(global_vars["agent"], visited)
     else:
         # No-op for non-runnable, if any
         pass
