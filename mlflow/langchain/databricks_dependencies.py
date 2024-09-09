@@ -199,11 +199,12 @@ def _extract_dependency_list_from_lc_model(lc_model) -> Generator[Resource, None
     The logic here does not cover all legacy chains. If you need to support a custom chain,
     you need to monkey patch this function.
     """
-    print("getting resources from lc model")
     if lc_model is None:
         return
+    print("getting resources from lc model")
     print(type(lc_model))
     print(lc_model)
+    print(dir(lc_model))
     print("==========================")
     # leaf node
     yield from _extract_databricks_dependencies_from_chat_model(lc_model)
@@ -246,9 +247,6 @@ def _traverse_runnable(
     if isinstance(lc_model, Runnable):
         # Visit the returned graph
         for node in lc_model.get_graph().nodes.values():
-            yield from _traverse_runnable(node.data, visited)
-        
-        for node in inspect.getclosurevars(lc_model.func).globals.values():
             yield from _traverse_runnable(node.data, visited)
     else:
         # No-op for non-runnable, if any
