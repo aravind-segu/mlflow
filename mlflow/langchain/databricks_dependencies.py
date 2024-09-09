@@ -58,18 +58,20 @@ def _get_vectorstore_from_retriever(retriever) -> Generator[Resource, None, None
 def _is_langgraph_tool_node_supported() -> bool:
     try:
         from langgraph.prebuilt.tool_node import ToolNode  # noqa: F401
-
+        print("langgraph tools supported")
         return True
     except ImportError:
+        print("langgraph tools not supported")
         return False
 
 
 def _is_langchain_tools_supported() -> bool:
     try:
         from langchain_community.tools import BaseTool  # noqa: F401
-
+        print("langchain tools supported")
         return True
     except ImportError:
+        print("langchain tools not supported")
         return False
 
 
@@ -197,9 +199,12 @@ def _extract_dependency_list_from_lc_model(lc_model) -> Generator[Resource, None
     The logic here does not cover all legacy chains. If you need to support a custom chain,
     you need to monkey patch this function.
     """
+    print("getting resources from lc model")
     if lc_model is None:
         return
-
+    print(type(lc_model))
+    print(lc_model)
+    print("==========================")
     # leaf node
     yield from _extract_databricks_dependencies_from_chat_model(lc_model)
     yield from _extract_databricks_dependencies_from_retriever(lc_model)
