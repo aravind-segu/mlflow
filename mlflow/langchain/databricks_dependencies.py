@@ -227,6 +227,9 @@ def _traverse_runnable(
     by lc_model.get_graph().nodes.values().
     This function supports arbitrary LCEL chain.
     """
+    print("TOP MOST")
+    print(lc_model)
+    print(type(lc_model))
     from langchain_core.runnables import Runnable
 
     visited = visited or set()
