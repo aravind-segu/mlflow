@@ -239,6 +239,7 @@ def _traverse_runnable(
     yield from _extract_dependency_list_from_lc_model(lc_model)
 
     if isinstance(lc_model, Runnable):
+        print("Trying here")
         # Visit the returned graph
         for node in lc_model.get_graph().nodes.values():
             yield from _traverse_runnable(node.data, visited)
@@ -282,7 +283,9 @@ def _detect_databricks_dependencies(lc_model, log_errors_as_warnings=True) -> Li
             if dependency not in unique_dependencies:
                 unique_dependencies.append(dependency)
         return unique_dependencies
-    except Exception:
+    except Exception as e:
+        print("EXCEPTION HERE")
+        print(e)
         if log_errors_as_warnings:
             _logger.warning(
                 "Unable to detect Databricks dependencies. "
