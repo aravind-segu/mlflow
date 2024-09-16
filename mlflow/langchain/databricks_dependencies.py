@@ -246,6 +246,9 @@ def _traverse_runnable(
         print("trying here")
         # Visit the variables of the function as well to extract dependencies
         if hasattr(lc_model, "func") and lc_model.func is not None:
+            print("In here")
+            print(lc_model.func)
+            print(type(lc_model.func))
             for node in inspect.getclosurevars(lc_model.func).globals.values():
                 yield from _traverse_runnable(node, visited)
     else:
