@@ -364,8 +364,12 @@ def save_model(
     needs_databricks_auth = False
     if Version(langchain.__version__) >= Version("0.0.311") and mlflow_model.resources is None:
         if databricks_resources := _detect_databricks_dependencies(lc_model):
+            print("GOT RESOURCES")
+            print(databricks_resources)
             serialized_databricks_resources = _ResourceBuilder.from_resources(databricks_resources)
+            print(serialized_databricks_resources)
             mlflow_model.resources = serialized_databricks_resources
+            print(mlflow_model.resources)
             needs_databricks_auth = any(
                 isinstance(r, DatabricksFunction) for r in databricks_resources
             )
