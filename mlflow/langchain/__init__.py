@@ -150,6 +150,7 @@ def save_model(
     model_config=None,
     streamable: Optional[bool] = None,
 ):
+    print("HELLLLLOOOOOOOOO")
     """
     Save a LangChain model to a path on the local file system.
 
@@ -362,6 +363,9 @@ def save_model(
     )
 
     needs_databricks_auth = False
+    print("TIME TO EXTRACT RESOURCES")
+    print(langchain.__version__)
+    print(mlflow_model.resources)
     if Version(langchain.__version__) >= Version("0.0.311") and mlflow_model.resources is None:
         if databricks_resources := _detect_databricks_dependencies(lc_model):
             print("GOT RESOURCES")
