@@ -355,9 +355,11 @@ def _detect_databricks_dependencies(lc_model, log_errors_as_warnings=True) -> Li
     If a chat_model is found, it will be used to extract the databricks chat dependencies.
     """
     try:
+        print("TRYING HERE")
         dependency_list = list(_traverse_runnable(lc_model))
         # Filter out duplicate dependencies so same dependencies are not added multiple times
         # We can't use set here as the object is not hashable so we need to filter it out manually.
+        print(dependency_list)
         unique_dependencies = []
         for dependency in dependency_list:
             if dependency not in unique_dependencies:
