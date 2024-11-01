@@ -201,6 +201,7 @@ def _extract_dependency_list_from_lc_model(lc_model) -> Generator[Resource, None
     if lc_model is None:
         return
 
+    print(type(lc_model))
     # leaf node
     yield from _extract_databricks_dependencies_from_chat_model(lc_model)
     yield from _extract_databricks_dependencies_from_retriever(lc_model)
@@ -242,11 +243,13 @@ def _traverse_runnable(
             pydantic.version.VERSION
         ) >= version.parse("2.0"):
             nodes = _get_nodes_from_runnable_lambda(lc_model)
+            print(nodes)
         else:
             nodes = _get_nodes_from_runnable_callable(lc_model)
             # If no nodes are found continue with the default behaviour
             if len(nodes) == 0:
                 nodes = lc_model.get_graph().nodes.values()
+            print(nodes)
 
         for node in nodes:
             yield from _traverse_runnable(node.data, visited)
