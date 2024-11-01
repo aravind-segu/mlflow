@@ -366,7 +366,9 @@ def save_model(
     print("TIME TO EXTRACT RESOURCES")
     print(langchain.__version__)
     print(mlflow_model.resources)
+    print(Version(langchain.__version__) >= Version("0.0.311") and mlflow_model.resources is None)
     if Version(langchain.__version__) >= Version("0.0.311") and mlflow_model.resources is None:
+        print("DETECTING DEPENDENCIES")
         if databricks_resources := _detect_databricks_dependencies(lc_model):
             print("GOT RESOURCES")
             print(databricks_resources)
@@ -422,7 +424,7 @@ def save_model(
 
 @experimental
 @format_docstring(LOG_MODEL_PARAM_DOCS.format(package_name=FLAVOR_NAME))
-@docstring_version_compatibility_warning(FLAVOR_NAME)
+@docstring_version_compatibilxity_warning(FLAVOR_NAME)
 @trace_disabled  # Suppress traces for internal predict calls while logging model
 def log_model(
     lc_model,
