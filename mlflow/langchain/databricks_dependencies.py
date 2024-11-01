@@ -122,6 +122,8 @@ def _extract_databricks_dependencies_from_llm(llm) -> Generator[Resource, None, 
     if _isinstance_with_multiple_modules(
         llm, "Databricks", ["langchain.llms", "langchain_community.llms"]
     ):
+        print("GETTING LLMs")
+        print(llm.endpoint_name)
         yield DatabricksServingEndpoint(endpoint_name=llm.endpoint_name)
 
 
@@ -131,6 +133,8 @@ def _extract_databricks_dependencies_from_chat_model(chat_model) -> Generator[Re
         "ChatDatabricks",
         ["langchain_databricks", "langchain.chat_models", "langchain_community.chat_models"],
     ):
+        print("GETTING CHAT DATABRICKS")
+        print(chat_model.endpoint)
         yield DatabricksServingEndpoint(endpoint_name=chat_model.endpoint)
 
 
@@ -367,6 +371,7 @@ def _detect_databricks_dependencies(lc_model, log_errors_as_warnings=True) -> Li
         for dependency in dependency_list:
             if dependency not in unique_dependencies:
                 unique_dependencies.append(dependency)
+        print("FINAL DEPENDENCIES: " + str(unique_dependencies))
         return unique_dependencies
     except Exception as e:
         print ("GETTING AN EXCEPTION HERE: " + e)
