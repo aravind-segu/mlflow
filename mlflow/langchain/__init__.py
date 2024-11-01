@@ -444,6 +444,7 @@ def log_model(
     streamable=None,
     resources=None,
 ):
+    print("LOG MODEL")
     """
     Log a LangChain model as an MLflow artifact for the current run.
 
