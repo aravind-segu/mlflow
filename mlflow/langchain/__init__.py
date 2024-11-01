@@ -424,7 +424,7 @@ def save_model(
 
 @experimental
 @format_docstring(LOG_MODEL_PARAM_DOCS.format(package_name=FLAVOR_NAME))
-@docstring_version_compatibilxity_warning(FLAVOR_NAME)
+@docstring_version_compatibility_warning(FLAVOR_NAME)
 @trace_disabled  # Suppress traces for internal predict calls while logging model
 def log_model(
     lc_model,
