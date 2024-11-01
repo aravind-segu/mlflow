@@ -363,7 +363,8 @@ def _detect_databricks_dependencies(lc_model, log_errors_as_warnings=True) -> Li
             if dependency not in unique_dependencies:
                 unique_dependencies.append(dependency)
         return unique_dependencies
-    except Exception:
+    except Exception as e:
+        print ("GETTING AN EXCEPTION HERE: " + e)
         if log_errors_as_warnings:
             _logger.warning(
                 "Unable to detect Databricks dependencies. "
