@@ -259,6 +259,7 @@ def save_model(
             True, the model must implement `stream` method. If None, streamable is
             set to True if the model implements `stream` method. Default to `None`.
     """
+    print("GET MODEL")
     with tempfile.TemporaryDirectory() as temp_dir:
         import langchain
         from langchain.schema import BaseRetriever
@@ -291,6 +292,7 @@ def save_model(
         mlflow_model = Model()
     saved_example = _save_example(mlflow_model, input_example, path, example_no_conversion)
 
+    print("GET SIGNATURE")
     if signature is None:
         if saved_example is not None:
             wrapped_model = _LangChainModelWrapper(lc_model)
@@ -330,6 +332,7 @@ def save_model(
     if metadata is not None:
         mlflow_model.metadata = metadata
 
+    print("GET DEPENDENCY SCHEMAS")
     with _get_dependencies_schemas() as dependencies_schemas:
         schema = dependencies_schemas.to_dict()
         if schema is not None:
@@ -349,6 +352,7 @@ def save_model(
             **model_data_kwargs,
         }
 
+    print("PYFUNC ADD TO MODEL")
     pyfunc.add_to_model(
         mlflow_model,
         loader_module="mlflow.langchain",
