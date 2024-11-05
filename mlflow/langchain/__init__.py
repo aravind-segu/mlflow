@@ -263,15 +263,16 @@ def save_model(
     with tempfile.TemporaryDirectory() as temp_dir:
         import langchain
         from langchain.schema import BaseRetriever
-
+        print("VALIDATE LC MODEL")
         lc_model_or_path = _validate_and_prepare_lc_model_or_path(lc_model, loader_fn, temp_dir)
-
+        print("VALIDATE ENV ARGUMENTS")
         _validate_env_arguments(conda_env, pip_requirements, extra_pip_requirements)
-
+        print("VALIDATE TARGET SAVE PATH")
         path = os.path.abspath(path)
         _validate_and_prepare_target_save_path(path)
-
+        
         if isinstance(model_config, str):
+            print("VALIDATE MODEL CONFIG FROM FILD")
             model_config = _validate_and_get_model_config_from_file(model_config)
 
         model_code_path = None
@@ -280,16 +281,17 @@ def save_model(
             # specified by `lc_model`. Verify that the path exists and, if so, copy it to the
             # model directory along with any other specified code modules
             model_code_path = lc_model_or_path
-
+            print("VALIDATE LC MODEL CODE PATH")
             lc_model = _load_model_code_path(model_code_path, model_config)
             _validate_and_copy_file_to_directory(model_code_path, path, "code")
         else:
             lc_model = lc_model_or_path
-
+    print("VALIDATE COPY CODE PATHS")
     code_dir_subpath = _validate_and_copy_code_paths(code_paths, path)
 
     if mlflow_model is None:
         mlflow_model = Model()
+    print("VALIDATE SAVE EXAMPLE")
     saved_example = _save_example(mlflow_model, input_example, path, example_no_conversion)
 
     print("GET SIGNATURE")
