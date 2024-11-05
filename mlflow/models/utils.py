@@ -1788,10 +1788,13 @@ def _mock_dbutils(globals_dict):
 # dynamically generated module name. This bypasses the caching mechanism, as each import is
 # considered a separate module by the Python interpreter.
 def _load_model_code_path(code_path: str, model_config: Optional[Union[str, Dict[str, Any]]]):
+    print("LOAD MODEL CODE PATH")
+    print(code_path)
     with _config_context(model_config):
         try:
             new_module_name = f"code_model_{uuid.uuid4().hex}"
             spec = importlib.util.spec_from_file_location(new_module_name, code_path)
+            print(spec)
             module = importlib.util.module_from_spec(spec)
             sys.modules[new_module_name] = module
             # Since dbutils will only work in databricks environment, we need to mock it
@@ -1813,6 +1816,7 @@ def _load_model_code_path(code_path: str, model_config: Optional[Union[str, Dict
             "If the model is logged as code, ensure the model is set using "
             "mlflow.models.set_model() within the code file code file."
         )
+    print("FINISHED MODEL CODE PATH")
     return mlflow.models.model.__mlflow_model__
 
 
