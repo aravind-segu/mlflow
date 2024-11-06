@@ -240,7 +240,7 @@ def _traverse_runnable(
         return
     
     print("CURRENT OBJECT ID: " +  str(current_object_id))
-    if lc_model.name is not None:
+    if hasattr(lc_model, 'name') and lc_model.name is not None:
         print(lc_model.name)
     print("==================")
 
