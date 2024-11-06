@@ -447,7 +447,7 @@ def _detect_databricks_dependencies(lc_model, log_errors_as_warnings=True) -> Li
         print("FINAL DEPENDENCIES: " + str(unique_dependencies))
         return unique_dependencies
     except Exception as e:
-        print ("GETTING AN EXCEPTION HERE: " + e)
+        print ("GETTING AN EXCEPTION HERE: " + str(e))
         if log_errors_as_warnings:
             _logger.warning(
                 "Unable to detect Databricks dependencies. "
