@@ -288,6 +288,9 @@ def _get_nodes_from_runnable_lambda(lc_model):
     from the original get_graph() function, dropping the input/output related logic.
     https://github.com/langchain-ai/langchain/blob/2ea5f60cc5747a334550273a5dba1b70b11414c1/libs/core/langchain_core/runnables/base.py#L4493C1-L4512C46
     """
+    print(lc_model)
+    print(lc_model.deps)
+    print(lc_model.get_graph().nodes)
     if deps := lc_model.deps:
         nodes = []
         for dep in deps:
