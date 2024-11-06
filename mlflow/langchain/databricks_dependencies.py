@@ -234,12 +234,13 @@ def _traverse_runnable(
 
     visited = visited or set()
     current_object_id = id(lc_model)
-    print("CURRENT OBJECT ID: " +  current_object_id)
-    if lc_model.name is not None:
-        print(lc_model.name)
-    print("==================")
+    # if lc_model.name is not None:
+    #     print(lc_model.name)
     if current_object_id in visited:
         return
+    
+    print("CURRENT OBJECT ID: " +  current_object_id)
+    print("==================")
 
     # Visit the current object
     visited.add(current_object_id)
