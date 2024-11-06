@@ -239,7 +239,7 @@ def _traverse_runnable(
     if current_object_id in visited:
         return
     
-    print("CURRENT OBJECT ID: " +  current_object_id)
+    print("CURRENT OBJECT ID: " +  str(current_object_id))
     print("==================")
 
     # Visit the current object
