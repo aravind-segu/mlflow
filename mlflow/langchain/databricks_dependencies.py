@@ -232,6 +232,7 @@ def get_function_nonlocals(func: Callable) -> list[Any]:
         List[Any]: The nonlocal variables accessed by the function.
     """
     try:
+        print("GETTING SOURCE CODE")
         code = inspect.getsource(func)
         tree = ast.parse(textwrap.dedent(code))
         visitor = FunctionNonLocals()
@@ -258,7 +259,8 @@ def get_function_nonlocals(func: Callable) -> list[Any]:
         return values
     except (SyntaxError, TypeError, OSError, SystemError) as e:
         print("EXCEPTION")
-        print(e)
+        print(f"Error type: {type(e).__name__}")
+        print(f"Error message: {str(e)}")
         return []
     
 def _traverse_runnable(
@@ -286,11 +288,15 @@ def _traverse_runnable(
     if hasattr(lc_model, 'name') and lc_model.name is not None:
         print(lc_model.name)
         if (lc_model.name == "call_model"):
-            code = inspect.getsource(lc_model.func)
-            tree = ast.parse(textwrap.dedent(code))
-            visitor = FunctionNonLocals()
-            visitor.visit(tree)
-            print(visitor.nonlocals)
+            print(type(lc_model.func))
+            print(callable(lc_model.func))
+            print(lc_model.func.__name__)
+            # print("GETTING SOURCE CODE")
+            # code = inspect.getsource(lc_model.func)
+            # tree = ast.parse(textwrap.dedent(code))
+            # visitor = FunctionNonLocals()
+            # visitor.visit(tree)
+            # print(visitor.nonlocals)
             print("-------------------")
             get_function_nonlocals(lc_model.func)
             print("-------------------")
@@ -448,6 +454,8 @@ def _detect_databricks_dependencies(lc_model, log_errors_as_warnings=True) -> Li
         return unique_dependencies
     except Exception as e:
         print ("GETTING AN EXCEPTION HERE: " + str(e))
+        print(f"Error type: {type(e).__name__}")
+        print(f"Error message: {str(e)}")
         if log_errors_as_warnings:
             _logger.warning(
                 "Unable to detect Databricks dependencies. "
