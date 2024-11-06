@@ -239,7 +239,7 @@ def _traverse_runnable(
     if hasattr(lc_model, 'name') and lc_model.name is not None:
         print(lc_model.name)
     print("==================")
-    
+
     if current_object_id in visited:
         return
 
@@ -373,6 +373,8 @@ def _detect_databricks_dependencies(lc_model, log_errors_as_warnings=True) -> Li
     """
     try:
         print("TRYING HERE")
+        print(lc_model)
+        print("-----------------------------")
         dependency_list = list(_traverse_runnable(lc_model))
         # Filter out duplicate dependencies so same dependencies are not added multiple times
         # We can't use set here as the object is not hashable so we need to filter it out manually.
