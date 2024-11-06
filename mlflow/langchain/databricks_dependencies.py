@@ -234,15 +234,15 @@ def _traverse_runnable(
 
     visited = visited or set()
     current_object_id = id(lc_model)
-    # if lc_model.name is not None:
-    #     print(lc_model.name)
-    if current_object_id in visited:
-        return
-    
+
     print("CURRENT OBJECT ID: " +  str(current_object_id))
     if hasattr(lc_model, 'name') and lc_model.name is not None:
         print(lc_model.name)
     print("==================")
+    
+    if current_object_id in visited:
+        return
+
 
     # Visit the current object
     visited.add(current_object_id)
