@@ -1817,6 +1817,9 @@ def _load_model_code_path(code_path: str, model_config: Optional[Union[str, Dict
             "mlflow.models.set_model() within the code file code file."
         )
     print("FINISHED MODEL CODE PATH")
+    print("MODEL HERE: ")
+    print(mlflow.models.model.__mlflow_model__)
+    print("______________________________")
     return mlflow.models.model.__mlflow_model__
 
 

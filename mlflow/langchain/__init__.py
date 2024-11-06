@@ -284,6 +284,8 @@ def save_model(
             print("VALIDATE LC MODEL CODE PATH")
             lc_model = _load_model_code_path(model_code_path, model_config)
             _validate_and_copy_file_to_directory(model_code_path, path, "code")
+            print(lc_model)
+            print("__________________________")
         else:
             lc_model = lc_model_or_path
     print("VALIDATE COPY CODE PATHS")
