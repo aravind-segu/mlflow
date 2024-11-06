@@ -243,8 +243,7 @@ def _traverse_runnable(
     if hasattr(lc_model, 'name') and lc_model.name is not None:
         print(lc_model.name)
         if (lc_model.name == "call_model"):
-
-            code = inspect.getsource(call_model)
+            code = inspect.getsource(lc_model.func)
             tree = ast.parse(textwrap.dedent(code))
             visitor = FunctionNonLocals()
             visitor.visit(tree)
