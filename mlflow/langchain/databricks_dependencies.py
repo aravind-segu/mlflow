@@ -222,6 +222,8 @@ def _traverse_runnable(
     lc_model,
     visited: Optional[Set[int]] = None,
 ) -> Generator[Resource, None, None]:
+    from langchain_core.runnables.utils import get_function_nonlocals
+    import inspect
     """
     This function contains the logic to traverse a langchain_core.runnables.RunnableSerializable
     object. It first inspects the current object using _extract_dependency_list_from_lc_model
@@ -238,6 +240,9 @@ def _traverse_runnable(
     print("CURRENT OBJECT ID: " +  str(current_object_id))
     if hasattr(lc_model, 'name') and lc_model.name is not None:
         print(lc_model.name)
+        if (lc_model.name == 'call_model'):
+            get_function_nonlocals(lc_model.func)
+            print(inspect.getclosurevars(lc_model.func))
     print("==================")
 
     if current_object_id in visited:
