@@ -2,7 +2,7 @@ import importlib
 import inspect
 import logging
 import warnings
-from typing import Any, Generator, List, Optional, Set
+from typing import Any, Generator, List, Optional, Set, Callable
 
 from packaging import version
 
@@ -218,11 +218,54 @@ def _extract_dependency_list_from_lc_model(lc_model) -> Generator[Resource, None
         yield from _extract_dependency_list_from_lc_model(getattr(lc_model, attr_name, None))
 
 
+def get_function_nonlocals(func: Callable) -> list[Any]:
+    from langchain_core.runnables.utils import FunctionNonLocals
+    import ast
+    import inspect
+    import textwrap
+    """Get the nonlocal variables accessed by a function.
+
+    Args:
+        func: The function to check.
+
+    Returns:
+        List[Any]: The nonlocal variables accessed by the function.
+    """
+    try:
+        code = inspect.getsource(func)
+        tree = ast.parse(textwrap.dedent(code))
+        visitor = FunctionNonLocals()
+        visitor.visit(tree)
+        values: list[Any] = []
+        closure = inspect.getclosurevars(func)
+        candidates = {**closure.globals, **closure.nonlocals}
+        for k, v in candidates.items():
+            if k in visitor.nonlocals:
+                values.append(v)
+            for kk in visitor.nonlocals:
+                if "." in kk and kk.startswith(k):
+                    vv = v
+                    for part in kk.split(".")[1:]:
+                        if vv is None:
+                            break
+                        else:
+                            try:
+                                vv = getattr(vv, part)
+                            except AttributeError:
+                                break
+                    else:
+                        values.append(vv)
+        return values
+    except (SyntaxError, TypeError, OSError, SystemError) as e:
+        print("EXCEPTION")
+        print(e)
+        return []
+    
 def _traverse_runnable(
     lc_model,
     visited: Optional[Set[int]] = None,
 ) -> Generator[Resource, None, None]:
-    from langchain_core.runnables.utils import get_function_nonlocals, FunctionNonLocals
+    from langchain_core.runnables.utils import FunctionNonLocals
     import ast
     import inspect
     import textwrap
@@ -249,7 +292,7 @@ def _traverse_runnable(
             visitor.visit(tree)
             print(visitor.nonlocals)
             print("-------------------")
-            print(get_function_nonlocals(lc_model.func))
+            get_function_nonlocals(lc_model.func)
             print("-------------------")
 
             print(inspect.getclosurevars(lc_model.func))
