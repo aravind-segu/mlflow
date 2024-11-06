@@ -240,7 +240,7 @@ def _traverse_runnable(
     print("CURRENT OBJECT ID: " +  str(current_object_id))
     if hasattr(lc_model, 'name') and lc_model.name is not None:
         print(lc_model.name)
-        if (lc_model.name == "RunnableLambda(call_model)"):
+        if (lc_model.name == "call_model"):
             get_function_nonlocals(lc_model.func)
             print(inspect.getclosurevars(lc_model.func))
     print("==================")
