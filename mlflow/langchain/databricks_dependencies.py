@@ -335,7 +335,29 @@ def _traverse_runnable(
         # No-op for non-runnable, if any
         pass
 
+def _get_deps_from_closures(lc_model):
+    import inspect
 
+    if not hasattr(lc_model, "func"):
+        return []
+    
+    try:
+        from langchain_core.runnables import Runnable
+
+        closure = inspect.getclosurevars(lc_model.func)
+        candidates = {**closure.globals, **closure.nonlocals}
+        deps = []
+
+        for _, v, in candidates.items():
+            if isinstance(v, Runnable):
+                deps.append(v)
+            elif isinstance(getattr(v, "__self__", None), Runnable):
+                deps.append(v.__self__)
+
+        return deps
+    except Exception:
+        return []
+    
 def _get_nodes_from_runnable_lambda(lc_model):
     """
     This is a workaround for the LangGraph issue: https://github.com/langchain-ai/langgraph/issues/1856
@@ -359,8 +381,11 @@ def _get_nodes_from_runnable_lambda(lc_model):
     """
     print(lc_model)
     print(lc_model.deps)
+    print(_get_deps_from_closures(lc_model))
     print(lc_model.get_graph().nodes)
-    if deps := lc_model.deps:
+
+
+    if deps := lc_model.deps or _get_deps_from_closures(lc_model):
         nodes = []
         for dep in deps:
             dep_graph = dep.get_graph()
