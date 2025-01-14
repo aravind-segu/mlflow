@@ -181,11 +181,12 @@ def get_model_version_dependencies(model_dir):
     from mlflow.models.resources import ResourceType
 
     model = _load_model(model_dir)
+    print(model)
     model_info = model.get_model_info()
     dependencies = []
 
     databricks_resources = getattr(model, "resources", {})
-
+    print(databricks_resources)
     if databricks_resources:
         databricks_dependencies = databricks_resources.get("databricks", {})
         dependencies.extend(
@@ -256,6 +257,7 @@ def _fetch_langchain_dependency_from_model_resources(databricks_dependencies, ke
     dependencies = databricks_dependencies.get(key, [])
     deps = []
     for dependency in dependencies:
+        print(**dependency)
         deps.append({"type": resource_type, **dependency})
     return deps
 
