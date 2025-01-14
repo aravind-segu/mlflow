@@ -179,7 +179,7 @@ def get_model_version_dependencies(model_dir):
     to be passed into CreateModelVersion.
     """
     from mlflow.models.resources import ResourceType
-
+    print("GETTING DEPENDENCIES")
     model = _load_model(model_dir)
     model_info = model.get_model_info()
     dependencies = []
@@ -256,7 +256,7 @@ def _fetch_langchain_dependency_from_model_resources(databricks_dependencies, ke
     dependencies = databricks_dependencies.get(key, [])
     deps = []
     for dependency in dependencies:
-        deps.append({"type": resource_type, **dependency})
+        deps.append({"type": resource_type, "name":dependency["name"]})
     return deps
 
 
