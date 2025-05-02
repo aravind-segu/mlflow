@@ -208,6 +208,7 @@ class FileStore(AbstractStore):
         """
         Run checks before running directory operations.
         """
+        print(f"Root Directory: {self.root_directory}")
         if not exists(self.root_directory):
             raise Exception(f"'{self.root_directory}' does not exist.")
         if not is_directory(self.root_directory):
@@ -215,12 +216,15 @@ class FileStore(AbstractStore):
 
     def _get_experiment_path(self, experiment_id, view_type=ViewType.ALL, assert_exists=False):
         parents = []
+        print("GETTING EXPERIMENT PATH")
+        print(self.root_directory)
         if view_type == ViewType.ACTIVE_ONLY or view_type == ViewType.ALL:
             parents.append(self.root_directory)
         if view_type == ViewType.DELETED_ONLY or view_type == ViewType.ALL:
             parents.append(self.trash_folder)
         for parent in parents:
             exp_list = find(parent, experiment_id, full_path=True)
+            print(exp_list)
             if len(exp_list) > 0:
                 return exp_list[0]
         if assert_exists:
@@ -416,10 +420,13 @@ class FileStore(AbstractStore):
         return self._get_experiment_path(experiment_id) is not None
 
     def _get_experiment(self, experiment_id, view_type=ViewType.ALL):
+        print("GETTING EXPERIMENT")
         self._check_root_dir()
         _validate_experiment_id(experiment_id)
         experiment_dir = self._get_experiment_path(experiment_id, view_type)
+        print(experiment_dir)
         if experiment_dir is None:
+            print("RAISING HERE")
             raise MlflowException(
                 f"Could not find experiment with ID {experiment_id}",
                 databricks_pb2.RESOURCE_DOES_NOT_EXIST,
