@@ -57,6 +57,8 @@ def get_deploy_client(target_uri=None):
             )
             return None
     target = parse_target_uri(target_uri)
+    print("hello")
+    print(plugin_store.registry)
     plugin = plugin_store[target]
     for _, obj in inspect.getmembers(plugin):
         if inspect.isclass(obj):

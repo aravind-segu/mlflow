@@ -57,6 +57,7 @@ dependencies = [
   "typing-extensions<5,>=4.0.0",
   "uvicorn<1",
   "waitress<4; platform_system == 'Windows'",
+  "databricks-ai-bridge>=0.6.0"
 ]
 [[project.maintainers]]
 name = "Databricks"

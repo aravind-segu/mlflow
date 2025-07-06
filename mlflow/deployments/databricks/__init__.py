@@ -119,6 +119,19 @@ class DatabricksDeploymentClient(BaseDeploymentClient):
         """
         raise NotImplementedError
 
+    def _get_host_creds(self, target_uri):
+        """
+        Get host credentials for the target URI. This method can be overridden by subclasses
+        to provide custom authentication logic.
+        
+        Args:
+            target_uri: The target URI for the Databricks workspace.
+            
+        Returns:
+            Host credentials for the target URI.
+        """
+        return get_databricks_host_creds(target_uri)
+
     def _call_endpoint(
         self,
         *,
@@ -135,7 +148,7 @@ class DatabricksDeploymentClient(BaseDeploymentClient):
             call_kwargs["json"] = json_body
 
         response = http_request(
-            host_creds=get_databricks_host_creds(self.target_uri),
+            host_creds=self._get_host_creds(self.target_uri),
             endpoint=posixpath.join(prefix, "serving-endpoints", route or ""),
             method=method,
             timeout=MLFLOW_HTTP_REQUEST_TIMEOUT.get() if timeout is None else timeout,
@@ -163,7 +176,7 @@ class DatabricksDeploymentClient(BaseDeploymentClient):
             call_kwargs["json"] = json_body
 
         response = http_request(
-            host_creds=get_databricks_host_creds(self.target_uri),
+            host_creds=self._get_host_creds(self.target_uri),
             endpoint=posixpath.join(prefix, "serving-endpoints", route or ""),
             method=method,
             timeout=MLFLOW_HTTP_REQUEST_TIMEOUT.get() if timeout is None else timeout,

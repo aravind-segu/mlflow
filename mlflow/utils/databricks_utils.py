@@ -839,6 +839,38 @@ def get_databricks_host_creds(server_uri=None):
         databricks_auth_profile=databricks_auth_profile,
     )
 
+def get_databricks_obo_host_creds(target_uri):
+    """
+    Returns MLflow host credentials for Databricks Model Serving with On-Behalf-Of (OBO) user authentication.
+    
+    This function attempts to use the ModelServingUserCredentials strategy to authenticate
+    and retrieve the appropriate host and token for the current environment.
+    """
+    try:
+        from databricks_ai_bridge import ModelServingUserCredentials
+        from databricks.sdk import WorkspaceClient
+        from mlflow.tracking.credentials import MlflowHostCreds
+        import os
+
+        MODEL_SERVING_HOST_ENV_VAR = "DATABRICKS_MODEL_SERVING_HOST_URL"
+        DB_MODEL_SERVING_HOST_ENV_VAR = "DB_MODEL_SERVING_HOST_URL"
+
+        workspace_client = WorkspaceClient(credentials_strategy=ModelServingUserCredentials())
+        host = workspace_client.config.host or os.environ.get(DB_MODEL_SERVING_HOST_ENV_VAR) or os.environ.get(MODEL_SERVING_HOST_ENV_VAR)
+
+        return MlflowHostCreds(
+            host=host,
+            token=workspace_client.config.token,
+            use_databricks_sdk=True,
+            use_secret_scope_token=True,
+        )
+    except Exception as e:
+        raise MlflowException(
+            "Unable to authenticate using `ModelServingUserCredentials` in the Databricks Model Serving environment. "
+            "Ensure the agent model is logged with a `UserAuthPolicy` and that 'On Behalf of User' authorization for Agents is enabled in your workspace. "
+            "For details, refer to the documentation: https://docs.databricks.com/aws/en/generative-ai/agent-framework/authenticate-on-behalf-of-user. "
+            f"If the issue persists, contact Databricks Support. Error: {e}"
+        ) from e
 
 @_use_repl_context_if_available("mlflowGitRepoUrl")
 def get_git_repo_url():
