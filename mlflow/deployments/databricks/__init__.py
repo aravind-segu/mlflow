@@ -302,6 +302,7 @@ class DatabricksDeploymentClient(BaseDeploymentClient):
         )
 
         for line in chunk_line_iter:
+            print(type(line))
             print(line)
             splits = line.split(":", 1)
             if len(splits) < 2:
