@@ -302,6 +302,7 @@ class DatabricksDeploymentClient(BaseDeploymentClient):
         )
 
         for line in chunk_line_iter:
+            print(line)
             splits = line.split(":", 1)
             if len(splits) < 2:
                 raise MlflowException(
@@ -316,11 +317,12 @@ class DatabricksDeploymentClient(BaseDeploymentClient):
                 )
 
             value = value.strip()
+            print(value)
             if value == "[DONE]":
                 # Databricks endpoint streaming response ends with
                 # a line of "data: [DONE]"
                 return
-
+            print(value)
             yield json.loads(value)
 
     def create_endpoint(self, name=None, config=None, route_optimized=False):
