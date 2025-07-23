@@ -178,7 +178,7 @@ class DatabricksDeploymentClient(BaseDeploymentClient):
         # Streaming response content are composed of multiple lines.
         # Each line format depends on specific endpoint
         print("ENDPOITN STREAM START")
-        for line in response.iter_lines:
+        for line in response.iter_lines():
             print(type(line))
             print(line)
         print("ENDPOITN STREAM END")
